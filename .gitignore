@@ -1,0 +1,6 @@
+.settings/
+target/
+*.db
+DatabaseConfiguration.iml
+DatabaseConfiguration.ipr
+DatabaseConfiguration.iws

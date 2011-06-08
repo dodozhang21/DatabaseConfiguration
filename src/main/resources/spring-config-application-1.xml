@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+        p:location="classpath:env.properties"
+        p:properties-ref="commonsConfigurationFactoryBean"/>
+
+    <bean id="commonsConfigurationFactoryBean" class="org.springmodules.commons.configuration.CommonsConfigurationFactoryBean">
+        <constructor-arg ref="databaseConfiguration"/>
+    </bean>
+
+    <bean id="databaseConfiguration" class="org.apache.commons.configuration.DatabaseConfiguration">
+        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
+        <constructor-arg name="table" value="configuration"/><!-- configuration table name -->
+        <constructor-arg name="nameColumn" value="application"/><!-- name column -->
+        <constructor-arg name="keyColumn" value="key"/><!-- key column -->
+        <constructor-arg name="valueColumn" value="value"/><!-- value column -->
+        <constructor-arg name="name">
+            <util:constant static-field="net.pureessence.example.Constants.APPLICATION_ONE"/>
+        </constructor-arg><!-- name (specific configurations) -->
+    </bean>
+
+    <bean id="person"
+			class="net.pureessence.example.Person"
+			p:firstName="${first.name}"
+			p:lastName="${last.name}"
+			p:email="${email}"
+            p:car="${car}" />
+</beans>
